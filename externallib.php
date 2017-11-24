@@ -30,10 +30,7 @@ class local_wstemplate_external extends external_api {
      */
     public static function hello_world_parameters() {
         return new external_function_parameters(
-                array(
-                		'initialdate' => new external_value(PARAM_INT, 'Initial date to retrieve the data', VALUE_DEFAULT, 0),
-                		'enddate' => new external_value(PARAM_INT, 'End date to retrieve the data', VALUE_DEFAULT, time())
-                )
+                array('welcomemessage' => new external_value(PARAM_TEXT, 'The welcome message. By default it is "Hello world,"', VALUE_DEFAULT, 'Hello world, '))
         );
     }
 
@@ -41,27 +38,26 @@ class local_wstemplate_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function hello_world($initialdate = 0, $enddate = time()) {
-        global $DB;
+    public static function hello_world($welcomemessage = 'Hello world, ') {
+        global $USER;
 
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::hello_world_parameters(),
-                array('initialdate' => $initialdate,'enddate' => $enddate));
+                array('welcomemessage' => $welcomemessage));
 
         //Context validation
         //OPTIONAL but in most web service it should present
-       /* $context = get_context_instance(CONTEXT_USER, $USER->id);
-        self::validate_context($context);*/
+        $context = get_context_instance(CONTEXT_USER, $USER->id);
+        self::validate_context($context);
 
         //Capability checking
         //OPTIONAL but in most web service it should present
-       /* if (!has_capability('moodle/user:viewdetails', $context)) {
+        if (!has_capability('moodle/user:viewdetails', $context)) {
             throw new moodle_exception('cannotviewprofile');
-        }*/
-		
-        $data = $DB->get_record('paperattendance_session', array("id"=>1));
-        return $data->id;
+        }
+
+        return $params['welcomemessage'] . $USER->firstname ;;
     }
 
     /**
@@ -69,7 +65,7 @@ class local_wstemplate_external extends external_api {
      * @return external_description
      */
     public static function hello_world_returns() {
-        return new external_value(PARAM_TEXT, 'data of the attendance beetween the dates.');
+        return new external_value(PARAM_TEXT, 'The welcome message + user first name');
     }
 
 

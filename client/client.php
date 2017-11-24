@@ -23,20 +23,19 @@
 
 /// SETUP - NEED TO BE CHANGED
 $token = '301f64482f6825f36336cfc70f3e09b6';
-$domainname = 'webcursos-d.uai.cl';
+$domainname = 'http://webcursos-d.uai.cl';
 
 /// FUNCTION NAME
 $functionname = 'local_wstemplate_hello_world';
 
 /// PARAMETERS
-$initialdate = 0;
-$enddate = time();
+$welcomemsg = 'Hello, ';
 
 ///// XML-RPC CALL
 header('Content-Type: text/plain');
 $serverurl = $domainname . '/webservice/xmlrpc/server.php'. '?wstoken=' . $token;
 require_once('./curl.php');
 $curl = new curl;
-$post = xmlrpc_encode_request($functionname, array($initialdate,$enddate));
+$post = xmlrpc_encode_request($functionname, array($welcomemsg));
 $resp = xmlrpc_decode($curl->post($serverurl, $post));
 print_r($resp);
