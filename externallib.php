@@ -60,7 +60,7 @@ class local_wstemplate_external extends external_api {
             throw new moodle_exception('cannotviewprofile');
         }*/
 		
-        $data = $DB->get_records('paperattendance_session', array("id"=>1));
+        $data = $DB->get_record('paperattendance_session', array("id"=>1));
         return $data->id;
     }
 
