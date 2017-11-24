@@ -56,7 +56,7 @@ class local_wstemplate_external extends external_api {
         if (!has_capability('moodle/user:viewdetails', $context)) {
             throw new moodle_exception('cannotviewprofile');
         }
-        $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 200');
+        $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
 
         return $params['welcomemessage'] . $USER->firstname ." ". $return->fullname;
     }
