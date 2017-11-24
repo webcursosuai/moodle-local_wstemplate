@@ -22,7 +22,7 @@
 // 5- Run this script directly from your browser: you should see 'Hello, FIRSTNAME'
 
 /// SETUP - NEED TO BE CHANGED
-$token = '301f64482f6825f36336cfc70f3e09b6';
+$token = '7c64f7677ba11ca8f2c741f52b4e0287';
 $domainname = 'http://webcursos-d.uai.cl';
 
 /// FUNCTION NAME
