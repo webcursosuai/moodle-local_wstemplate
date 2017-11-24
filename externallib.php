@@ -39,7 +39,7 @@ class local_wstemplate_external extends external_api {
      * @return string welcome message
      */
     public static function hello_world($welcomemessage = 'Hello world, ') {
-        global $USER;
+        global $USER, $DB;
 
         //Parameter validation
         //REQUIRED
@@ -56,8 +56,9 @@ class local_wstemplate_external extends external_api {
         if (!has_capability('moodle/user:viewdetails', $context)) {
             throw new moodle_exception('cannotviewprofile');
         }
+        $return = $DB->get_record('papperattendance_session', array("id"=>1));
 
-        return $params['welcomemessage'] . $USER->firstname ;;
+        return $params['welcomemessage'] . $USER->firstname .$return->id ;
     }
 
     /**
