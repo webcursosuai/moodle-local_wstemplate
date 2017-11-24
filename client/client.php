@@ -22,20 +22,21 @@
 // 5- Run this script directly from your browser: you should see 'Hello, FIRSTNAME'
 
 /// SETUP - NEED TO BE CHANGED
-$token = 'dff3bc6a9368d3b0db1ef59f6760ef7c';
-$domainname = 'http://YOURMOODLE';
+$token = '301f64482f6825f36336cfc70f3e09b6';
+$domainname = 'webcursos-d.uai.cl';
 
 /// FUNCTION NAME
 $functionname = 'local_wstemplate_hello_world';
 
 /// PARAMETERS
-$welcomemsg = 'Hello, ';
+$initialdate = 0;
+$enddate = time();
 
 ///// XML-RPC CALL
 header('Content-Type: text/plain');
 $serverurl = $domainname . '/webservice/xmlrpc/server.php'. '?wstoken=' . $token;
 require_once('./curl.php');
 $curl = new curl;
-$post = xmlrpc_encode_request($functionname, array($welcomemsg));
+$post = xmlrpc_encode_request($functionname, array($initialdate,$enddate));
 $resp = xmlrpc_decode($curl->post($serverurl, $post));
 print_r($resp);
