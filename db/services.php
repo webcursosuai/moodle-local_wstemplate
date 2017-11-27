@@ -14,28 +14,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Web service local plugin functions and service definitions.
+ * Web service local plugin template external functions and service definitions.
  *
- * @package    local
- * @copyright  2017 Mihail Pozarski <mihailpozarski@outlook.com>
+ * @package    localwstemplate
+ * @copyright  2011 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Web service functions to install.
+// We defined the web service functions to install.
 $functions = array(
-        'local_webservice_presence' => array(
+        'local_paperattendance_presence' => array(
                 'classname'   => 'local_webservice_external',
-                'methodname'  => 'webservice_presence',
+                'methodname'  => 'paperattendance_presence',
                 'classpath'   => 'local/webservice/externallib.php',
                 'description' => 'Returns the presence records between 2 dates.',
                 'type'        => 'read',
         )
 );
 
-// The services to install as pre-build services. A pre-build service is not editable by administrator.
+// We define the services to install as pre-build services. A pre-build service is not editable by administrator.
 $services = array(
-        'Paperattendance presence' => array(
-                'functions' => array ('local_webservice_presence'),
+        'My service' => array(
+                'functions' => array ('local_paperattendance_presence'),
                 'restrictedusers' => 0,
                 'enabled'=>1,
         )
