@@ -23,9 +23,9 @@
 
 // Web service functions to install.
 $functions = array(
-        'local_webservice_paperattendance_presence' => array(
+        'local_webservice_presence' => array(
                 'classname'   => 'local_webservice_external',
-                'methodname'  => 'paperattendance_presence',
+                'methodname'  => 'webservice_presence',
                 'classpath'   => 'local/webservice/externallib.php',
                 'description' => 'Returns the presence records between 2 dates.',
                 'type'        => 'read',
@@ -35,7 +35,7 @@ $functions = array(
 // The services to install as pre-build services. A pre-build service is not editable by administrator.
 $services = array(
         'Paperattendance presence' => array(
-                'functions' => array ('local_webservice_paperattendance_presence'),
+                'functions' => array ('local_webservice_presence'),
                 'restrictedusers' => 0,
                 'enabled'=>1,
         )
