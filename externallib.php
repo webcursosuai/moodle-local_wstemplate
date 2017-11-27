@@ -58,7 +58,7 @@ class local_wstemplate_external extends external_api {
         }
         $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
 
-        return $params['welcomemessage'] . $USER->firstname ." ". $return->fullname;
+        return array($params['welcomemessage'] . $USER->firstname ." ". $return->fullname);
     }
 
     /**
