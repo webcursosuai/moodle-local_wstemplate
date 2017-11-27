@@ -46,17 +46,7 @@ class local_wstemplate_external extends external_api {
         $params = self::validate_parameters(self::hello_world_parameters(),
                 array('welcomemessage' => $welcomemessage));
 
-        //Context validation
-        //OPTIONAL but in most web service it should present
-        $context = get_context_instance(CONTEXT_USER, $USER->id);
-        self::validate_context($context);
-
-        //Capability checking
-        //OPTIONAL but in most web service it should present
-        if (!has_capability('moodle/user:viewdetails', $context)) {
-            throw new moodle_exception('cannotviewprofile');
-        }
-        $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
+      $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
         $response = array();
         $response[0] = $params['welcomemessage'] . $USER->firstname ." ". $return->fullname;
         return print_r($response);
