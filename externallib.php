@@ -14,21 +14,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * External Web Service Template
+ * External Web Service
  *
- * @package    localwstemplate
- * @copyright  2011 Moodle Pty Ltd (http://moodle.com)
+ * @package    local
+ * @copyright  2017 Mihail Pozarski <mihailpozarski@outlook.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->libdir . "/externallib.php");
 
-class local_wstemplate_external extends external_api {
+class local_webservice_external extends external_api {
 
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function hello_world_parameters() {
+    public static function paperattendance_presence_parameters() {
         return new external_function_parameters(
                 array(
                 	'initialdate' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
@@ -38,15 +38,14 @@ class local_wstemplate_external extends external_api {
     }
 
     /**
-     * Returns welcome message
-     * @return string welcome message
+     * Returns presence of paperattendance
+     * @return json presence of paperattendance 
      */
-    public static function hello_world($initialdate = 0, $enddate = 0) {
+    public static function paperattendance_presence($initialdate = 0, $enddate = 0) {
         global $DB;
 
         //Parameter validation
-        //REQUIRED
-        $params = self::validate_parameters(self::hello_world_parameters(),
+        $params = self::validate_parameters(self::paperattendance_presence_parameters(),
         		array('initialdate' => $initialdate, 'enddate' => $enddate));
 
       $return = $DB->get_records_sql('SELECT pp.id as presenceid,
@@ -66,7 +65,7 @@ class local_wstemplate_external extends external_api {
      * Returns description of method result value
      * @return external_description
      */
-    public static function hello_world_returns() {
+    public static function paperttendance_presence_returns() {
         return new external_value(PARAM_TEXT, 'json encoded array with id,username,course shortname, presence status and omegaid');
     }
 
