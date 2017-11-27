@@ -30,10 +30,7 @@ class local_wstemplate_external extends external_api {
      */
     public static function hello_world_parameters() {
         return new external_function_parameters(
-                array(
-                	'initialdate' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
-                	'enddate' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, time())
-                )
+                array('welcomemessage' => new external_value(PARAM_TEXT, 'The welcome message. By default it is "Hello world,"', VALUE_DEFAULT, 'Hello world, '))
         );
     }
 
@@ -41,13 +38,13 @@ class local_wstemplate_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function hello_world($initialdate = 0, $enddate = time()) {
-        global $DB;
+    public static function hello_world($welcomemessage = 'Hello world, ') {
+        global $USER, $DB;
 
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::hello_world_parameters(),
-        		array('initialdate' => $initialdate, 'enddate' => $enddate));
+                array('welcomemessage' => $welcomemessage));
 
       $return = $DB->get_records_sql('SELECT pp.id as presenceid,
 										u.username as uaiemail,
@@ -67,7 +64,7 @@ class local_wstemplate_external extends external_api {
      * @return external_description
      */
     public static function hello_world_returns() {
-        return new external_value(PARAM_TEXT, 'json encoded array with all the attendance info');
+        return new external_value(PARAM_TEXT, 'The welcome message + user first name');
     }
 
 
