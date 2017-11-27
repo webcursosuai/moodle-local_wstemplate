@@ -58,7 +58,7 @@ class local_wstemplate_external extends external_api {
 										INNER JOIN {paperattendance_session} AS ps ON (pp.sessionid = ps.id) 
 										INNER JOIN {course} AS c ON (c.id = ps.courseid) 
 										INNER JOIN {user} AS u ON (u.id = pp.userid) limit 500');
-        echo $params['initialdate'] ." ". $params['enddate'];
+        echo json_encode($params['initialdate'] ." ". $params['enddate']);
         //return $return;
     }
 
