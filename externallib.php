@@ -49,7 +49,8 @@ class local_wstemplate_external extends external_api {
       $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
         $response = array();
         $response["message"] = $params['welcomemessage'] . $USER->firstname ." ". $return->fullname;
-        echo json_encode($response);
+        echo $response;
+        //die();
         //return $return;
     }
 
