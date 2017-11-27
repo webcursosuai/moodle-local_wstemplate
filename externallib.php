@@ -46,7 +46,15 @@ class local_wstemplate_external extends external_api {
         $params = self::validate_parameters(self::hello_world_parameters(),
                 array('welcomemessage' => $welcomemessage));
 
-      $return = $DB->get_records_sql('SELECT id, fullname, shortname FROM mdl_course limit 10');
+      $return = $DB->get_records_sql('SELECT pp.id as presenceid,
+										u.username as uaiemail,
+										c.shortname as courseshortname,
+										pp.status as presencestatus,
+										pp.omegaid as omegaid 
+										FROM {paperattendance_presence} AS pp 
+										INNER JOIN {paperattendance_session} AS ps ON (pp.sessionid = ps.id) 
+										INNER JOIN {course} AS c ON (c.id = ps.courseid) 
+										INNER JOIN {user} AS u ON (u.id = pp.userid) limit 500');
         echo json_encode($return);
         //return $return;
     }
