@@ -67,7 +67,7 @@ class local_wstemplate_external extends external_api {
      * @return external_description
      */
     public static function hello_world_returns() {
-        return new external_value(PARAM_TEXT, 'The welcome message + user first name');
+        return new external_value(PARAM_TEXT, 'json encoded array with id,username,course shortname, presence status and omegaid');
     }
 
 
