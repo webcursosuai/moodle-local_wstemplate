@@ -57,8 +57,9 @@ class local_wstemplate_external extends external_api {
             throw new moodle_exception('cannotviewprofile');
         }
         $return = $DB->get_record_sql('SELECT * FROM mdl_course WHERE id = 10');
-        $response = array($params['welcomemessage'] . $USER->firstname ." ". $return->fullname);
-        return $response;
+        $response = array();
+        $response[0] = $params['welcomemessage'] . $USER->firstname ." ". $return->fullname;
+        return print_r($response);
     }
 
     /**
