@@ -46,7 +46,7 @@ class local_wstemplate_external extends external_api {
         $params = self::validate_parameters(self::hello_world_parameters(),
                 array('welcomemessage' => $welcomemessage));
 
-      $return = $DB->get_records_sql('SELECT * FROM mdl_course limit 10');
+      $return = $DB->get_records_sql('SELECT id, fullname, shortname FROM mdl_course limit 10');
         echo json_encode($return);
         //return $return;
     }
