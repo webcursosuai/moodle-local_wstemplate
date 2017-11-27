@@ -56,7 +56,9 @@ class local_webservice_external extends external_api {
 										FROM {paperattendance_presence} AS pp 
 										INNER JOIN {paperattendance_session} AS ps ON (pp.sessionid = ps.id) 
 										INNER JOIN {course} AS c ON (c.id = ps.courseid) 
-										INNER JOIN {user} AS u ON (u.id = pp.userid) where pp.lastmodified > ? AND pp.lastmodified < ?', array($initialdate,$enddate));
+										INNER JOIN {user} AS u ON (u.id = pp.userid) 
+										WHERE pp.lastmodified > ? AND pp.lastmodified < ?
+										ORDER BY pp.id', array($initialdate,$enddate));
         echo json_encode($return);
         //return $return;
     }
