@@ -14,3 +14,4 @@
 
 $plugin->version  = 2017271103;
 $plugin->requires = 2010112400;
+$plugin->component = 'local_webservice';
