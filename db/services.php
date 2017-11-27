@@ -34,7 +34,7 @@ $functions = array(
 
 // The services to install as pre-build services. A pre-build service is not editable by administrator.
 $services = array(
-        'My service' => array(
+        'Paperattendance presence' => array(
                 'functions' => array ('local_paperattendance_presence'),
                 'restrictedusers' => 0,
                 'enabled'=>1,
