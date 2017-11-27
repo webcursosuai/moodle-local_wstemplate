@@ -32,7 +32,7 @@ class local_wstemplate_external extends external_api {
         return new external_function_parameters(
                 array(
                 	'initialdate' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
-                	'enddate' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, time())
+                	'enddate' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, 0)
                 )
         );
     }
@@ -41,7 +41,7 @@ class local_wstemplate_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function hello_world($initialdate = 0, $enddate = time()) {
+    public static function hello_world($initialdate = 0, $enddate = 0) {
         global $DB;
 
         //Parameter validation
