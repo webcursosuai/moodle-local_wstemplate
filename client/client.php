@@ -22,8 +22,8 @@
 // 5- Run this script directly from your browser: you should see 'Hello, FIRSTNAME'
 
 /// SETUP - NEED TO BE CHANGED
-$token = 'dff3bc6a9368d3b0db1ef59f6760ef7c';
-$domainname = 'http://YOURMOODLE';
+$token = '7c64f7677ba11ca8f2c741f52b4e0287';
+$domainname = 'http://webcursos-d.uai.cl';
 
 /// FUNCTION NAME
 $functionname = 'local_wstemplate_hello_world';
