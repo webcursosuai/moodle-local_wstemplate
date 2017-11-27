@@ -26,7 +26,7 @@ $functions = array(
         'local_webservice_paperattendance_presence' => array(
                 'classname'   => 'local_webservice_external',
                 'methodname'  => 'paperattendance_presence',
-                'classpath'   => 'local/wstemplate/externallib.php',
+                'classpath'   => 'local/webservice/externallib.php',
                 'description' => 'Returns the presence records between 2 dates.',
                 'type'        => 'read',
         )
