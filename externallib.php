@@ -73,7 +73,7 @@ class local_webservice_external extends external_api {
                                                 INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
                                                 INNER JOIN {feedback_item} AS fi ON (f.id = fi.feedback)
                                                 INNER JOIN {feedback_value} AS fv ON (fi.id = fv.item)
-                                                GROUP BY f.id', array($courseid,"feedback",$feedbackid));
+                                                GROUP BY fv.id', array($courseid,"feedback",$feedbackid));
                 break;
             case($courseid == 0 && $feedbackid > 0):
                 $return = array("ERROR: Please enter a valid course id (1-∞)");
