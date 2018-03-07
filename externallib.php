@@ -62,7 +62,7 @@ class local_webservice_external extends external_api {
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
                                                 INNER JOIN {feedback} AS f ON (c.id = f.course)
-                                                INNER JOIN {feedback_completed AS fc ON (f.id = fc.feedback)
+                                                INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
                                                 GROUP BY f.id', array($courseid,"feedback"));
                 break;
             case($courseid > 0 && $feedbackid >0):
@@ -70,7 +70,7 @@ class local_webservice_external extends external_api {
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
                                                 INNER JOIN {feedback} AS f ON (c.id = f.course)
-                                                INNER JOIN {feedback_completed AS fc ON (f.id = fc.feedback)
+                                                INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
                                                 GROUP BY f.id', array($courseid,"feedback"));
                 break;
             case($courseid == 0 && $feedbackid > 0):
