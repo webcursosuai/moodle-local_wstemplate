@@ -58,7 +58,7 @@ class local_webservice_external extends external_api {
                                                 GROUP BY c.id', array("feedback"));
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT c.id, f.id, max(fc.timemodified) FROM {course} AS c
+                $return = $DB->get_records_sql('SELECT c.id, f.id, FROM_UNIXTIME(max(fc.timemodified)) FROM {course} AS c
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
                                                 INNER JOIN {feedback} AS f ON (c.id = f.course)
@@ -69,9 +69,11 @@ class local_webservice_external extends external_api {
                 $return = $DB->get_records_sql('SELECT c.id, f.id, max(fc.timemodified) FROM {course} AS c
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
-                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
+                                                INNER JOIN {feedback} AS f ON (c.id = f.course AND f.id = ?)
                                                 INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
-                                                GROUP BY f.id', array($courseid,"feedback"));
+                                                INNER JOIN {feedback_item} AS fi ON (f.id = fi.feedback)
+                                                INNER JOIN {feedback_value AS fv ON (fi.id = fv.item)
+                                                GROUP BY f.id', array($courseid,"feedback",$feedbackid));
                 break;
             case($courseid == 0 && $feedbackid > 0):
                 $return = array("ERROR: Please enter a valid course id (1-∞)");
