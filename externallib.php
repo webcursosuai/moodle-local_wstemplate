@@ -28,11 +28,11 @@ class local_webservice_external extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function webservice_presence_parameters() {
+    public static function webservice_surveycheck_parameters() {
         return new external_function_parameters(
                 array(
-                	'initialdate' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
-                	'enddate' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, 0)
+                	'courseid' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
+                	'feedbackid' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, 0)
                 )
         );
     }
@@ -41,24 +41,45 @@ class local_webservice_external extends external_api {
      * Returns presence of paperattendance
      * @return json presence of paperattendance 
      */
-    public static function webservice_presence($initialdate = 0, $enddate = 0) {
+    public static function webservice_surveycheck($courseid = 0, $feedbackid = 0) {
         global $DB;
 
         //Parameter validation
         $params = self::validate_parameters(self::webservice_presence_parameters(),
-        		array('initialdate' => $initialdate, 'enddate' => $enddate));
+            array('initialdate' => $courseid, 'enddate' => $feedbackid));
 
-      $return = $DB->get_records_sql('SELECT pp.id as presenceid,
-										u.username as uaiemail,
-										c.shortname as courseshortname,
-										pp.status as presencestatus,
-										pp.omegaid as omegaid 
-										FROM {paperattendance_presence} AS pp 
-										INNER JOIN {paperattendance_session} AS ps ON (pp.sessionid = ps.id) 
-										INNER JOIN {course} AS c ON (c.id = ps.courseid) 
-										INNER JOIN {user} AS u ON (u.id = pp.userid) 
-										WHERE pp.lastmodified > ? AND pp.lastmodified < ?
-										ORDER BY pp.id', array($initialdate,$enddate));
+        switch(true)
+        {
+            case($courseid == 0 && $feedbackid == 0):
+                $return = $DB->get_records_sql('SELECT c.id FROM {course} AS c
+                                                INNER JOIN {course_modules} AS cm ON (c.id = cm.course)
+                                                INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
+                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
+                                                GROUP BY c.id', array("feedback"));
+                break;
+            case($courseid > 0 && $feedbackid == 0):
+                $return = $DB->get_records_sql('SELECT c.id, f.id, max(fc.timemodified) FROM {course} AS c
+                                                INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
+                                                INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
+                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
+                                                INNER JOIN {feedbakc_completed AS fc ON (f.id = fc.feedback)
+                                                GROUP BY f.id', array($courseid,"feedback"));
+                break;
+            case($courseid > 0 && $feedbackid >0):
+                $return = $DB->get_records_sql('SELECT c.id, f.id, max(fc.timemodified) FROM {course} AS c
+                                                INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
+                                                INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
+                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
+                                                INNER JOIN {feedbakc_completed AS fc ON (f.id = fc.feedback)
+                                                GROUP BY f.id', array($courseid,"feedback"));
+                break;
+            case($courseid == 0 && $feedbackid > 0):
+                $return = array("ERROR: Please enter a valid course id (1-∞)");
+                break;
+            case($courseid < 0 || $feedbackid < 0):
+                $return = array("ERROR: Please enter positive values (1-∞)");
+                break;          
+        }
         echo json_encode($return);
         //return $return;
     }
@@ -67,8 +88,8 @@ class local_webservice_external extends external_api {
      * Returns description of method result value
      * @return external_description
      */
-    public static function webservice_presence_returns() {
-        return new external_value(PARAM_TEXT, 'json encoded array with id,username,course shortname, presence status and omegaid');
+    public static function webservice_surveycheck_returns() {
+        return new external_value(PARAM_TEXT, 'json encoded array that returns, courses and its surveys with the last time the survey was changed');
     }
 
 

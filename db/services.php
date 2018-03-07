@@ -23,19 +23,19 @@
 
 // Web service functions to install.
 $functions = array(
-        'local_webservice_presence' => array(
+        'local_webservice_surveycheck' => array(
                 'classname'   => 'local_webservice_external',
-                'methodname'  => 'webservice_presence',
+                'methodname'  => 'webservice_surveycheck',
                 'classpath'   => 'local/webservice/externallib.php',
-                'description' => 'Returns the presence records between 2 dates.',
+                'description' => 'Returns the last modification of the surveys within CDC moodle',
                 'type'        => 'read',
         )
 );
 
 // The services to install as pre-build services. A pre-build service is not editable by administrator.
 $services = array(
-        'Webservice Presence' => array(
-                'functions' => array ('local_webservice_presence'),
+        'Webservice surveycheck' => array(
+                'functions' => array ('local_webservice_surveycheck'),
                 'restrictedusers' => 0,
                 'enabled'=>1,
         )
