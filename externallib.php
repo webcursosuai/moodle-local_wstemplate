@@ -45,7 +45,7 @@ class local_webservice_external extends external_api {
         global $DB;
 
         //Parameter validation
-        $params = self::validate_parameters(self::webservice_presence_parameters(),
+        $params = self::validate_parameters(self::webservice_surveycheck_parameters(),
             array('initialdate' => $courseid, 'enddate' => $feedbackid));
 
         switch(true)
