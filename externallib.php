@@ -72,7 +72,7 @@ class local_webservice_external extends external_api {
                                                 INNER JOIN {feedback} AS f ON (c.id = f.course AND f.id = ?)
                                                 INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
                                                 INNER JOIN {feedback_item} AS fi ON (f.id = fi.feedback)
-                                                INNER JOIN {feedback_value AS fv ON (fi.id = fv.item)
+                                                INNER JOIN {feedback_value} AS fv ON (fi.id = fv.item)
                                                 GROUP BY f.id', array($courseid,"feedback",$feedbackid));
                 break;
             case($courseid == 0 && $feedbackid > 0):
