@@ -28,7 +28,7 @@ class local_webservice_external extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function webservice_surveycheck_parameters() {
+    public static function webservice_intranetmobile_parameters() {
         return new external_function_parameters(
                 array(
                 	'idnumber' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
@@ -40,7 +40,7 @@ class local_webservice_external extends external_api {
      * Returns presence of paperattendance
      * @return json presence of paperattendance 
      */
-    public static function webservice_surveycheck($courseidnumber = 0) {
+    public static function webservice_intranetmobile($courseidnumber = 0) {
         global $DB;
         
         //Parameter validation
@@ -58,7 +58,7 @@ class local_webservice_external extends external_api {
      * Returns description of method result value
      * @return external_description
      */
-    public static function webservice_surveycheck_returns() {
+    public static function webservice_intranetmobile_returns() {
         return new external_value(PARAM_TEXT, 'json encoded array that returns, courses and its surveys with the last time the survey was changed');
     }
 
