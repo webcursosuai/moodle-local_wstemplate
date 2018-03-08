@@ -94,6 +94,29 @@ class local_webservice_external extends external_api {
         return new external_value(PARAM_TEXT, 'json encoded array that returns, courses and its surveys with the last time the survey was changed');
     }
 
-
-
+    
+    public static function webservice_intranet_parameters() {
+        return new external_function_parameters(
+            array(
+                'idnumber' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0)
+            )
+            );
+    }
+    /**
+     * Returns presence of paperattendance
+     * @return json presence of paperattendance
+     */
+    public static function webservice_intranet($idnumber=0) {
+        global $DB;
+        //Parameter validation
+        $params = self::validate_parameters(self::webservice_intranet_parameters(),
+            array('idnumber' => $idnumber));
+        $return = $DB->get_record('course', array('idnumber' => $idnumber));
+        echo json_encode($return);
+    }
+    public static function webservice_intranet_returns() {
+        return new external_value(PARAM_TEXT, 'json encoded array that returns, courses and its surveys with the last time the survey was changed');
+    }
+    
+        
 }
