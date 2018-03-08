@@ -47,12 +47,9 @@ class local_webservice_external extends external_api {
         $params = self::validate_parameters(self::webservice_intranetmobile_parameters(),
             array('courseidnumber' => $courseidnumber));
 
-        switch(true)
-        {
-            case($courseid == 0 && $feedbackid == 0):
                 $return = $DB->get_record('course',array("idnumber" => $courseidnumber));
                 break;
-        }
+
         echo json_encode($return);
         //return $return;
     }
