@@ -28,10 +28,10 @@ class local_webservice_external extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function webservice_intranetmobile_parameters() {
+    public static function webservice_surveycheck_parameters() {
         return new external_function_parameters(
                 array(
-                	'courseidnumber' => new external_value(PARAM_INT, 'id number of the course where you want the files', VALUE_DEFAULT, 0),
+                	'idnumber' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
                 )
         );
     }
@@ -40,16 +40,16 @@ class local_webservice_external extends external_api {
      * Returns presence of paperattendance
      * @return json presence of paperattendance 
      */
-    public static function webservice_intranetmobile($courseidnumber = 0) {
+    public static function webservice_surveycheck($courseidnumber = 0) {
         global $DB;
-
+        
         //Parameter validation
         $params = self::validate_parameters(self::webservice_intranetmobile_parameters(),
-            array('courseidnumber' => $courseidnumber));
-
-                $return = $DB->get_record('course',array("idnumber" => $courseidnumber));
-                break;
-
+            array('idnumber' => $courseidnumber));
+        
+        $return = $DB->get_record('course',array("idnumber" => $courseidnumber));
+        break;
+        
         echo json_encode($return);
         //return $return;
     }
@@ -58,7 +58,10 @@ class local_webservice_external extends external_api {
      * Returns description of method result value
      * @return external_description
      */
-    public static function webservice_intranetmobile_returns() {
-        return new external_value(PARAM_TEXT, 'json encoded array that returns, courses files');
+    public static function webservice_surveycheck_returns() {
+        return new external_value(PARAM_TEXT, 'json encoded array that returns, courses and its surveys with the last time the survey was changed');
     }
+
+
+
 }
