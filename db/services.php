@@ -50,4 +50,4 @@ $services = array(
         'functions' => array ('local_webservice_intranet'),
         'restrictedusers' => 0,
         'enabled'=>1,
-);
+));
