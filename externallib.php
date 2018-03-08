@@ -61,7 +61,4 @@ class local_webservice_external extends external_api {
     public static function webservice_intranetmobile_returns() {
         return new external_value(PARAM_TEXT, 'json encoded array that returns, courses files');
     }
-
-s
-
 }
