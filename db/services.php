@@ -23,20 +23,20 @@
 
 // Web service functions to install.
 $functions = array(
-    'local_webservice_intranet' => array(
-        'classname'   => 'local_webservice_external',
-        'methodname'  => 'webservice_intranet',
-        'classpath'   => 'local/webservice/externallib.php',
-        'description' => 'return the course info for interanet',
-        'type'        => 'read',
-    )
-
+        'local_webservice_surveycheck' => array(
+                'classname'   => 'local_webservice_external',
+                'methodname'  => 'webservice_surveycheck',
+                'classpath'   => 'local/webservice/externallib.php',
+                'description' => 'Returns the last modification of the surveys within CDC moodle',
+                'type'        => 'read',
+        )
 );
 
 // The services to install as pre-build services. A pre-build service is not editable by administrator.
 $services = array(
-    'Webservice intranet' => array(
-        'functions' => array ('local_webservice_intranet'),
-        'restrictedusers' => 0,
-        'enabled'=>1,
-    ));
+        'Webservice surveycheck' => array(
+                'functions' => array ('local_webservice_surveycheck'),
+                'restrictedusers' => 0,
+                'enabled'=>1,
+        )
+);
