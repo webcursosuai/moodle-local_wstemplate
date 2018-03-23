@@ -54,26 +54,68 @@ class local_webservice_external extends external_api {
                 $return = $DB->get_records_sql('SELECT c.id FROM {course} AS c
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
-                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
-                                                GROUP BY c.id', array("feedback"));
+                                                INNER JOIN {questionnaire} AS q ON (c.id = q.course)
+                                                GROUP BY c.id', array("questionnaire"));
+                if(count($return) == 0){
+                    $return = array("ERROR: No questionnaires have been made");
+                }
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT c.id, f.id, FROM_UNIXTIME(max(fc.timemodified)) FROM {course} AS c
-                                                INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
-                                                INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
-                                                INNER JOIN {feedback} AS f ON (c.id = f.course)
-                                                LEFT JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
-                                                GROUP BY f.id', array($courseid,"feedback"));
+                $return = $DB->get_records_sql('SELECT q.id, MAX(qr.submitted) FROM {questionnaire} AS c
+                                                INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
+                                                INNER JOIN {questionnaire_response} AS qr ON (q.id = qe.survey_id)
+                                                GROUP BY q.id', array($courseid));
+                if(count($return) == 0){
+                    $return = array("ERROR: No questionnaires in this course");
+                }
                 break;
             case($courseid > 0 && $feedbackid >0):
-                $return = $DB->get_records_sql('SELECT c.id, f.id, f.name, fi.id, fi.name, fi.presentation, fi.typ, fv.id, fv.value FROM {course} AS c
-                                                INNER JOIN {course_modules} AS cm ON (c.id = cm.course AND c.id = ?)
-                                                INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
-                                                INNER JOIN {feedback} AS f ON (c.id = f.course AND f.id = ?)
-                                                INNER JOIN {feedback_completed} AS fc ON (f.id = fc.feedback)
-                                                INNER JOIN {feedback_item} AS fi ON (f.id = fi.feedback)
-                                                INNER JOIN {feedback_value} AS fv ON (fi.id = fv.item)
-                                                GROUP BY fv.id', array($courseid,"feedback",$feedbackid));
+                $return=array();
+                $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
+                                                        INNER JOIN {questionnaire_response_text} AS qrt ON (qrt.question_id = qq.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $rankresponses = $DB->get_records_sql('SELECT qrr.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qqc.content as question, qrr.rank as response FROM {questionnaire} AS q
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_quest_choice} AS qqc ON (qqc.question_id = qq.id)
+                                                        INNER JOIN {questionnaire_response_rank} AS qrr ON (qrr.choice_id = qqc.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $dateresponses = $DB->get_records_sql('SELECT qrd.di as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qq.content as question, qrd.response as response FROM {questionnaire} AS q
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
+                                                        INNER JOIN {questionnaire_response_date} AS qrd ON (qrd.question_id = qq.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $boolresponses = $DB->get_records_sql('SELECT qrd.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qq.content as question, qrd.choice_id as response FROM {questionnaire} AS q
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
+                                                        INNER JOIN {questionnaire_response_bool} AS qrd ON (qrd.question_id = qq.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $singleresponses = $DB->get_records_sql('SELECT qrs.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qq.content as question, qqc.content as response FROM {questionnaire} AS q
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
+                                                        INNER JOIN {questionnaire_quest_choice} AS qqc ON (qqc.question_id = qq.id)
+                                                        INNER JOIN {questionnaire_resp_single} AS qrs ON (qrs.choice_id = qqc.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $multiresponses = $DB->get_records_sql('SELECT qrm.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qq.content as question, qqc.content as response FROM {questionnaire} AS q
+                                                        INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
+                                                        INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
+                                                        INNER JOIN {questionnaire_quest_choice} AS qqc ON (qqc.question_id = qq.id)
+                                                        INNER JOIN {questionnaire_resp_multiple} AS qrm ON (qrm.choice_id = qqc.id)
+                                                        WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
+                $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
+                
+                
+                
+                if(count($return) == 0){
+                    $return = array("ERROR: This questionnaires in not in this course");
+                }
                 break;
             case($courseid == 0 && $feedbackid > 0):
                 $return = array("ERROR: Please enter a valid course id (1-∞)");
@@ -83,7 +125,6 @@ class local_webservice_external extends external_api {
                 break;          
         }
         echo json_encode($return);
-        //return $return;
     }
 
     /**
