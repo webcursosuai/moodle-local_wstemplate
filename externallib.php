@@ -80,6 +80,7 @@ class local_webservice_external extends external_api {
                 $rankresponses = $DB->get_records_sql('SELECT qrr.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, q.intro as info, qq.name as sectioncategory, qqc.content as question, qrr.rank as response FROM {questionnaire} AS q
                                                         INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
                                                         INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
+                                                        INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
                                                         INNER JOIN {questionnaire_quest_choice} AS qqc ON (qqc.question_id = qq.id)
                                                         INNER JOIN {questionnaire_response_rank} AS qrr ON (qrr.choice_id = qqc.id)
                                                         WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
