@@ -61,9 +61,9 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT q.id, MAX(qr.submitted) FROM {questionnaire} AS c
+                $return = $DB->get_records_sql('SELECT q.id, MAX(qr.submitted) FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
-                                                INNER JOIN {questionnaire_response} AS qr ON (q.id = qe.survey_id)
+                                                INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
                                                 GROUP BY q.id', array($courseid));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires in this course");
