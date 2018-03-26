@@ -130,7 +130,7 @@ class local_webservice_external extends external_api {
                     $response->fecha = $explode[5];
                     $response->grupo = $explode[6];
                     $response->coordinadora = $explode[7];
-                    $response->info = "";
+                    unset($response->info);
                 }
                 
                 
