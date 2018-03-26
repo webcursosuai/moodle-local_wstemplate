@@ -116,14 +116,20 @@ class local_webservice_external extends external_api {
                     foreach($explode as $key => $item){
                         $explode[$key] = strip_tags($item);
                     }
-                    $response->programa = $explode[0];
-                    $response->cliente = $explode[1];
-                    $response->actividad = $explode[2];
-                    $response->profesor1 = $explode[3];
-                    $response->profesor2 = $explode[4];
-                    $response->fecha = $explode[5];
-                    $response->grupo = $explode[6];
-                    $response->coordinadora = $explode[7];
+                    foreach($explode as $key => $exploded){
+                        $info = explode(":",$exploded);
+                        $explode[$key] = $info[1];
+                        
+                    }
+                    
+                    $response->programa = $explode[1];
+                    $response->cliente = $explode[3];
+                    $response->actividad = $explode[5];
+                    $response->profesor1 = $explode[7];
+                    $response->profesor2 = $explode[9];
+                    $response->fecha = $explode[11];
+                    $response->grupo = $explode[13];
+                    $response->coordinadora = $explode[15];
                     
                 }
                 
