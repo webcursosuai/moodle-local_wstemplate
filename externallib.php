@@ -111,6 +111,22 @@ class local_webservice_external extends external_api {
                                                         INNER JOIN {questionnaire_resp_multiple} AS qrm ON (qrm.choice_id = qqc.id)
                                                         WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                 $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
+                foreach($return as $response){
+                    $explode = explode("</li>",$response->response);
+                    foreach($explode as $key => $item){
+                        $explode[$key] = strip_tags($item);
+                    }
+                    $explode = explode(":",$explode);
+                    $response->programa = $explode[1];
+                    $response->cliente = $explode[3];
+                    $response->actividad = $explode[5];
+                    $response->profesor1 = $explode[7];
+                    $response->profesor2 = $explode[9];
+                    $response->fecha = $explode[11];
+                    $response->grupo = $explode[13];
+                    $response->coordinadora = $explode[15];
+                    
+                }
                 
                 
                 
