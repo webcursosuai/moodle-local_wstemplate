@@ -124,7 +124,7 @@ class local_webservice_external extends external_api {
                     $response->profesor2 = $explode[9];
                     $response->fecha = $explode[11];
                     $response->grupo = $explode[13];
-                    $response->coordinadora = $explode[13];
+                    $response->coordinadora = $explode[15];
                     
                 }
                 
