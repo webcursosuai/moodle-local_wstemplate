@@ -96,7 +96,8 @@ class local_webservice_external extends external_api {
                 foreach($questions as $question){
                     if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
                         $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
-                        $result->question = $question->name;
+                        $result->category = $question->name;
+                        $result->question = $question->content;
                         $result->responses = $responses;
                         $return[] = $result;
                     }
