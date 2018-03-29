@@ -70,7 +70,7 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid >0):
-                $result = array()
+                $result = array();
                 $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
                 $explode = explode("</li>",$return->intro);
                 foreach($explode as $key => $exploded){
@@ -96,7 +96,7 @@ class local_webservice_external extends external_api {
                         $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                         $return->question = $question->name;
                         $return->responses = $responses;
-                        $result[] = $return
+                        $result[] = $return;
                     }
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
@@ -104,7 +104,7 @@ class local_webservice_external extends external_api {
                             $responses = $DB->get_records_sql('SELECT id, rank+1 FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
                             $return->question = $rank->content;
                             $return->responses = $responses;
-                            $result[] = $return
+                            $result[] = $return;
                         }
                     }
                 }
