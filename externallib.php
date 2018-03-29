@@ -105,7 +105,7 @@ class local_webservice_external extends external_api {
                         $input->coordinadora = $result->coordinadora;
                         $input->category = $question->name;
                         $input->position = $question->position;
-                        $input->question = $question->content;
+                        $input->question = strip_tags($question->content);
                         $input->responses = $responses;
                         $return[] = $input;
                         
