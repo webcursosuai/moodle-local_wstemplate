@@ -91,6 +91,25 @@ class local_webservice_external extends external_api {
                 $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position
                                                     FROM {questionnaire_question}
                                                     WHERE survey_id = ? order by position',array($feedbackid));
+                
+                $count=0;
+                foreach($questions as $question){
+                    if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
+                        $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
+                        $result->question = $question->name;
+                        $result->responses = $responses;
+                        $return[] = $result;
+                    }
+                    if($question->type_id == 8){
+                        $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
+                        foreach($rankquestions as $rank){
+                            $responses = $DB->get_records_sql('SELECT id, rank+1 FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
+                            $result->question = $rank->content;
+                            $result->responses = $responses;
+                            $return[] = $result;
+                        }
+                    }
+                }
                
                
                 /*$return=array();
