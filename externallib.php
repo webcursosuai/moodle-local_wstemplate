@@ -86,7 +86,6 @@ class local_webservice_external extends external_api {
                 $result->grupo = $explode[6];
                 $result->coordinadora = $explode[7];
                 unset($result->intro);
-                $return= array($result);
                 
                 $questions = $DB->get_records_sql('SELECT id, name,content, type_id, length, position
                                                     FROM {questionnaire_question}
