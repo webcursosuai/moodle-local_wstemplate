@@ -114,7 +114,7 @@ class local_webservice_external extends external_api {
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
                         
                         foreach($rankquestions as $rank){
-                            if(strpos($rankquestions->content,')') !== false){
+                            if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $rank->content)){
                                 $explode = explode(")", $rank->content);
                                 $rank->content = ltrim($explode[1]);
                             }
