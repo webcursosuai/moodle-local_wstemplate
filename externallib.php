@@ -92,16 +92,7 @@ class local_webservice_external extends external_api {
                                                     WHERE survey_id = ? order by position',array($feedbackid));
                 
                 foreach($questions as $question){
-                    if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
-                        $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
-                        $result->category = $question->name;
-                        $result->question = $question->content;
-                        $result->responses = $responses;
-                        $return[] = $result;
-                        unset($result->category);
-                        unset($result->question);
-                        unset($result->responses);
-                    }
+                    
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
                         foreach($rankquestions as $rank){
