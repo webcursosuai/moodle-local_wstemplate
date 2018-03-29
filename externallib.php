@@ -70,35 +70,8 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid >0):
-                
-              /*  $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
-                $explode = explode("</li>",$return->intro);
-                foreach($explode as $key => $exploded){
-                    $info = explode(":",$exploded);
-                    $explode[$key] = $info[1];    
-                }
-                $return->programa = $explode[0];
-                $return->cliente = $explode[1];
-                $return->actividad = $explode[2];
-                $return->profesor1 = $explode[3];
-                $return->profesor2 = $explode[4];
-                $return->fecha = $explode[5];
-                $return->grupo = $explode[6];
-                $return->coordinadora = $explode[7];
-                unset($return->intro);
-               
-                $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position 
-                                                    FROM {questionnaire_question} 
-                                                    WHERE surveyid = ? order by position',array($feedbackid));
-                $count=0;
-                foreach($questions as $question){
-                    if($quesion->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
-                        $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ', array() )
-                    }
-                }
-                */
                 $return=array();
-                $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
+                $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
                                                         INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
                                                         INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
                                                         INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
@@ -144,8 +117,7 @@ class local_webservice_external extends external_api {
                                                         INNER JOIN {questionnaire_question_type} AS qqt ON (qqt.typeid = qq.type_id)
                                                         WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                 $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
-                foreach($return as $position => $response){
-                    $return[$position] = strip_tags($response->question);
+                foreach($return as $response){
                     $explode = explode("</li>",$response->info);
                     foreach($explode as $key => $item){
                         $explode[$key] = strip_tags($item);
@@ -167,7 +139,7 @@ class local_webservice_external extends external_api {
                     unset($response->info);
                 }
                 
-           
+                
                 
                 if(count($return) == 0){
                     $return = array("ERROR: This questionnaires in not in this course");
