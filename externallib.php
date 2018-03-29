@@ -88,7 +88,7 @@ class local_webservice_external extends external_api {
                 unset($result->intro);
                 $return= array($result);
                 
-                $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position
+                $questions = $DB->get_records_sql('SELECT id, name,content, type_id, length, position
                                                     FROM {questionnaire_question}
                                                     WHERE survey_id = ? order by position',array($feedbackid));
                 
