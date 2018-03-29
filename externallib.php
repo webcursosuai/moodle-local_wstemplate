@@ -71,7 +71,7 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid >0):
                 
-                $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
+                $result->programa = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
                 $explode = explode("</li>",$result->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
@@ -92,18 +92,40 @@ class local_webservice_external extends external_api {
                                                     WHERE survey_id = ? order by position',array($feedbackid));
                 
                 foreach($questions as $question){
-                    
+                    if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
+                        $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
+                        $input = new stdClass();
+                        $input->programa = $result->programa;
+                        $input->cliente =  $result->cliente;
+                        $input->actividad =  $result->actividad;
+                        $input->profesor1 =  $result->profesor1;
+                        $input->profesor2 = $result->profesor2;
+                        $input->fecha = $result->fecha;
+                        $input->grupo = $result->grupo;
+                        $input->coordinadora = $result->coordinadora;
+                        $input->category = $question->name;
+                        $input->question = $question->content;
+                        $input->responses = $responses;
+                        $return[] = $input;
+                        
+                    }
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
                         foreach($rankquestions as $rank){
                             $responses = $DB->get_records_sql('SELECT id, rank+1 FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
-                            $result->category = $question->name;
-                            $result->question = $rank->content;
-                            $result->responses = $responses;
-                            $return[] = $responses;
-                            unset($result->category);
-                            unset($result->question);
-                            unset($result->responses);
+                            $input = new stdClass();
+                            $input->programa = $result->programa;
+                            $input->cliente =  $result->cliente;
+                            $input->actividad =  $result->actividad;
+                            $input->profesor1 =  $result->profesor1;
+                            $input->profesor2 = $result->profesor2;
+                            $input->fecha = $result->fecha;
+                            $input->grupo = $result->grupo;
+                            $input->coordinadora = $result->coordinadora;
+                            $input->category = $question->name;
+                            $input->question = $rank->content;
+                            $input->responses = $responses;
+                            $return[] = $result;
                         }
                     }
                 }
