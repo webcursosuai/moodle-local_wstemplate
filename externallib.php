@@ -89,7 +89,7 @@ class local_webservice_external extends external_api {
                 
                 $questions = $DB->get_records_sql('SELECT id, name,content, type_id, length, position
                                                     FROM {questionnaire_question}
-                                                    WHERE survey_id = ? order by position',array($feedbackid));
+                                                    WHERE survey_id = ? AND deleted = "n" order by position',array($feedbackid));
                 
                 foreach($questions as $question){
                     if($question->type_id == 2  || $question->type_id == 10){
