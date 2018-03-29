@@ -98,7 +98,7 @@ class local_webservice_external extends external_api {
                         $result->question = $question->content;
                         $result->responses = $responses;
                         $result->query = $question->id;
-                        $return[] = $question->id;;
+                        $return[] = $question->id;
                     }
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
@@ -107,7 +107,7 @@ class local_webservice_external extends external_api {
                             $result->category = $question->name;
                             $result->question = $rank->content;
                             $result->responses = $responses;
-                            $return[] = $result;
+                            $return[] = $question->id;
                         }
                     }
                 }
