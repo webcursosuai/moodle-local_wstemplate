@@ -110,7 +110,7 @@ class local_webservice_external extends external_api {
                         $return[] = $input;
                         
                     }
-                    if($question->type_id == 8){
+                    elseif($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
                         foreach($rankquestions as $rank){
                             $responses = $DB->get_records_sql('SELECT id, rank+1 FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
