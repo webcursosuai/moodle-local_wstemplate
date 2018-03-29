@@ -71,23 +71,24 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid >0):
                 $result = array();
-                $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
-                $explode = explode("</li>",$return->intro);
+                $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
+                $explode = explode("</li>",$result->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
                     $explode[$key] = $info[1];    
                 }
-                $return->programa = $explode[0];
-                $return->cliente = $explode[1];
-                $return->actividad = $explode[2];
-                $return->profesor1 = $explode[3];
-                $return->profesor2 = $explode[4];
-                $return->fecha = $explode[5];
-                $return->grupo = $explode[6];
-                $return->coordinadora = $explode[7];
-                unset($return->intro);
+                $result->programa = $explode[0];
+                $result->cliente = $explode[1];
+                $result->actividad = $explode[2];
+                $result->profesor1 = $explode[3];
+                $result->profesor2 = $explode[4];
+                $result->fecha = $explode[5];
+                $result->grupo = $explode[6];
+                $result->coordinadora = $explode[7];
+                unset($result->intro);
+                $return = $result;
                
-                $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position 
+                /*$questions = $DB->get_records_sql('SELECT id, name, type_id, length, position 
                                                     FROM {questionnaire_question} 
                                                     WHERE surveyid = ? order by position',array($feedbackid));
                 $count=0;
