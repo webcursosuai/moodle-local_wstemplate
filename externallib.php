@@ -72,7 +72,7 @@ class local_webservice_external extends external_api {
             case($courseid > 0 && $feedbackid >0):
                 
                 $return = $DB->get_record('questionnaire', array("id"=>$feedbackid));
-                $explode = explode("</li>",$return->info);
+                $explode = explode("</li>",$return->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
                     $explode[$key] = $info[1];    
