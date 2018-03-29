@@ -125,7 +125,7 @@ class local_webservice_external extends external_api {
                             $input->category = $question->name;
                             $input->question = $rank->content;
                             $input->responses = $responses;
-                            $return[] = $result;
+                            $return[] = $input;
                         }
                     }
                 }
