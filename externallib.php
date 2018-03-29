@@ -93,12 +93,11 @@ class local_webservice_external extends external_api {
                 
                 foreach($questions as $question){
                     if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
-                        $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
+                        $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                         $result->category = $question->name;
                         $result->question = $question->content;
                         $result->responses = $responses;
-                        $result->query = $question->id;
-                        $return[] = $question->id;
+                        $return[] = $result;
                     }
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
@@ -107,7 +106,7 @@ class local_webservice_external extends external_api {
                             $result->category = $question->name;
                             $result->question = $rank->content;
                             $result->responses = $responses;
-                            $return[] = $question->id;
+                            $return[] = $result;
                         }
                     }
                 }
