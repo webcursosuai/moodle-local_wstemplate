@@ -71,7 +71,7 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid >0):
                 
-                $result->programa = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
+                $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
                 $explode = explode("</li>",$result->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
