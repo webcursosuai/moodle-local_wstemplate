@@ -70,47 +70,23 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid >0):
-                $result = array();
-                $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
-                $explode = explode("</li>",$result->intro);
+                
+                $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
+                $explode = explode("</li>",$return->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
                     $explode[$key] = $info[1];    
                 }
-                $result->programa = $explode[0];
-                $result->cliente = $explode[1];
-                $result->actividad = $explode[2];
-                $result->profesor1 = $explode[3];
-                $result->profesor2 = $explode[4];
-                $result->fecha = $explode[5];
-                $result->grupo = $explode[6];
-                $result->coordinadora = $explode[7];
-                unset($result->intro);
-                $return = $result;
+                $return->programa = $explode[0];
+                $return->cliente = $explode[1];
+                $return->actividad = $explode[2];
+                $return->profesor1 = $explode[3];
+                $return->profesor2 = $explode[4];
+                $return->fecha = $explode[5];
+                $return->grupo = $explode[6];
+                $return->coordinadora = $explode[7];
+                unset($return->intro);
                
-                /*$questions = $DB->get_records_sql('SELECT id, name, type_id, length, position 
-                                                    FROM {questionnaire_question} 
-                                                    WHERE surveyid = ? order by position',array($feedbackid));
-                $count=0;
-                foreach($questions as $question){
-                    if($question->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
-                        $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
-                        $return->question = $question->name;
-                        $return->responses = $responses;
-                        $result[] = $return;
-                    }
-                   /* if($question->type_id == 8){
-                        $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
-                        foreach($rankquestions as $rank){
-                            $responses = $DB->get_records_sql('SELECT id, rank+1 FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
-                            $return->question = $rank->content;
-                            $return->responses = $responses;
-                            $result[] = $return;
-                        }
-                    }*/
-                }
-                
-                
                 /*$return=array();
                 $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
                                                         INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
@@ -183,18 +159,18 @@ class local_webservice_external extends external_api {
                 
                 */
                 
-                if(count($result) == 0){
-                    $result = array("ERROR: This questionnaires in not in this course");
+                if(count($return) == 0){
+                    $return = array("ERROR: This questionnaires in not in this course");
                 }
                 break;
             case($courseid == 0 && $feedbackid > 0):
-                $result = array("ERROR: Please enter a valid course id (1-∞)");
+                $return = array("ERROR: Please enter a valid course id (1-∞)");
                 break;
             case($courseid < 0 || $feedbackid < 0):
-                $result = array("ERROR: Please enter positive values (1-∞)");
+                $return = array("ERROR: Please enter positive values (1-∞)");
                 break;          
         }
-        echo json_encode($result);
+        echo json_encode($return);
     }
 
     /**
