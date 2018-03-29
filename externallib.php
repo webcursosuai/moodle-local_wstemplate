@@ -98,7 +98,7 @@ class local_webservice_external extends external_api {
                         $result->category = $question->name;
                         $result->question = $question->content;
                         $result->responses = $responses;
-                        $result->query = $responses;
+                        $result->query = $question->id;
                         $return[] = $result;
                     }
                     if($question->type_id == 8){
