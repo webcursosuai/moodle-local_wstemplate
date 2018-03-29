@@ -71,7 +71,7 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid >0):
                 
-                $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
+              /*  $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
                 $explode = explode("</li>",$return->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
@@ -87,7 +87,17 @@ class local_webservice_external extends external_api {
                 $return->coordinadora = $explode[7];
                 unset($return->intro);
                
-                /*$return=array();
+                $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position 
+                                                    FROM {questionnaire_question} 
+                                                    WHERE surveyid = ? order by position',array($feedbackid));
+                $count=0;
+                foreach($questions as $question){
+                    if($quesion->type_id == 2 || $question->type_id == 3 || $question->type_id == 10){
+                        $responses = $DB->get_record_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ', array() )
+                    }
+                }
+                */
+                $return=array();
                 $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
                                                         INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
                                                         INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
@@ -157,7 +167,7 @@ class local_webservice_external extends external_api {
                     unset($response->info);
                 }
                 
-                */
+           
                 
                 if(count($return) == 0){
                     $return = array("ERROR: This questionnaires in not in this course");
