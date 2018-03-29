@@ -104,6 +104,7 @@ class local_webservice_external extends external_api {
                         $input->grupo = $result->grupo;
                         $input->coordinadora = $result->coordinadora;
                         $input->category = $question->name;
+                        $input->position = $question->position;
                         $input->question = $question->content;
                         $input->responses = $responses;
                         $return[] = $input;
@@ -123,6 +124,7 @@ class local_webservice_external extends external_api {
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
                             $input->category = $question->name;
+                            $input->position = $question->position;
                             $input->question = $rank->content;
                             $input->responses = $responses;
                             $return[] = $input;
