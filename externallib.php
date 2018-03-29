@@ -90,16 +90,22 @@ class local_webservice_external extends external_api {
                 $questions = $DB->get_records_sql('SELECT id, name,content, type_id, length, position
                                                     FROM {questionnaire_question}
                                                     WHERE survey_id = ? AND deleted = "n" order by position',array($feedbackid));
-                
+                $count = 0;
                 foreach($questions as $question){
+                    if($question->name === "EVALUACIÓN DEL PROFESOR"){
+                        $count++;
+                    }
                     if($question->type_id == 2  || $question->type_id == 10){
                         $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                         $input = new stdClass();
                         $input->programa = $result->programa;
                         $input->cliente =  $result->cliente;
                         $input->actividad =  $result->actividad;
-                        $input->profesor1 =  $result->profesor1;
-                        $input->profesor2 = $result->profesor2;
+                        if($count == 2 || $count == 1){
+                            $input->profesor =  $result->profesor1;
+                        }elseif(($count == 4 || $count == 3) && $result->profesor2 !== "n.a."){
+                            $input->profesor = $$result->profesor1;
+                        }
                         $input->fecha = $result->fecha;
                         $input->grupo = $result->grupo;
                         $input->coordinadora = $result->coordinadora;
@@ -123,8 +129,11 @@ class local_webservice_external extends external_api {
                             $input->programa = $result->programa;
                             $input->cliente =  $result->cliente;
                             $input->actividad =  $result->actividad;
-                            $input->profesor1 =  $result->profesor1;
-                            $input->profesor2 = $result->profesor2;
+                            if($count == 2 || $count == 1){
+                                $input->profesor =  $result->profesor1;
+                            }elseif(($count == 4 || $count == 3) && $result->profesor2 !== "n.a."){
+                                $input->profesor = $$result->profesor1;
+                            }
                             $input->fecha = $result->fecha;
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
