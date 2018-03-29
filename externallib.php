@@ -71,7 +71,7 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid >0):
                 
-                $return = $DB->get_record('questionnaire', array("id"=>$feedbackid));
+                $return = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array($feedbackid));
                 $explode = explode("</li>",$return->intro);
                 foreach($explode as $key => $exploded){
                     $info = explode(":",$exploded);
@@ -85,7 +85,7 @@ class local_webservice_external extends external_api {
                 $return->fecha = $explode[5];
                 $return->grupo = $explode[6];
                 $return->coordinadora = $explode[7];
-                unset($return->info);
+                unset($return->intro);
                
                 /*$return=array();
                 $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
