@@ -182,18 +182,18 @@ class local_webservice_external extends external_api {
                 
                 */
                 
-                if(count($return) == 0){
-                    $return = array("ERROR: This questionnaires in not in this course");
+                if(count($result) == 0){
+                    $result = array("ERROR: This questionnaires in not in this course");
                 }
                 break;
             case($courseid == 0 && $feedbackid > 0):
-                $return = array("ERROR: Please enter a valid course id (1-∞)");
+                $result = array("ERROR: Please enter a valid course id (1-∞)");
                 break;
             case($courseid < 0 || $feedbackid < 0):
-                $return = array("ERROR: Please enter positive values (1-∞)");
+                $result = array("ERROR: Please enter positive values (1-∞)");
                 break;          
         }
-        echo json_encode($return);
+        echo json_encode($result);
     }
 
     /**
