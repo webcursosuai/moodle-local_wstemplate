@@ -88,6 +88,10 @@ class local_webservice_external extends external_api {
                 unset($result->intro);
                 $return= array($result);
                 
+                $questions = $DB->get_records_sql('SELECT id, name, type_id, length, position
+                                                    FROM {questionnaire_question}
+                                                    WHERE surveyid = ? order by position',array($feedbackid));
+               
                
                 /*$return=array();
                 $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
