@@ -98,6 +98,9 @@ class local_webservice_external extends external_api {
                         $result->question = $question->content;
                         $result->responses = $responses;
                         $return[] = $result;
+                        unset($result->category);
+                        unset($result->question);
+                        unset($result->responses);
                     }
                     if($question->type_id == 8){
                         $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
@@ -107,6 +110,9 @@ class local_webservice_external extends external_api {
                             $result->question = $rank->content;
                             $result->responses = $responses;
                             $return[] = $result;
+                            unset($result->category);
+                            unset($result->question);
+                            unset($result->responses);
                         }
                     }
                 }
