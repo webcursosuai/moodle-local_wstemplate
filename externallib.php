@@ -202,10 +202,9 @@ class local_webservice_external extends external_api {
                             $explode = explode(")", $response->question);
                             $response->question = ltrim($explode[1]);
                         }
-                        $return[$position] = strip_tags($response->question);
+                        $return[$position]->question = strip_tags($response->question);
                         $explode = explode("</li>",$response->info);
-                        foreach($explode as $key => $item){
-                            
+                        foreach($explode as $key => $item){ 
                             $explode[$key] = strip_tags($item);
                         }
                         foreach($explode as $key => $exploded){
@@ -225,9 +224,6 @@ class local_webservice_external extends external_api {
                         unset($response->info);
                     }
                }
-                
-                
-                
                 if(count($return) == 0){
                     $return = array("ERROR: This questionnaires in not in this course");
                 }
