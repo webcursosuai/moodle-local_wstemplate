@@ -200,7 +200,7 @@ class local_webservice_external extends external_api {
                     foreach($return as $position => $response){
                         if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $response->question)){
                             $explode = explode(")", $response->question);
-                            $rank->content = ltrim($explode[1]);
+                            $response->question = ltrim($explode[1]);
                         }
                         $return[$position] = strip_tags($response->question);
                         $explode = explode("</li>",$response->info);
