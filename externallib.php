@@ -198,11 +198,11 @@ class local_webservice_external extends external_api {
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                     $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
                     foreach($return as $position => $response){
+                       
+                        $return[$position]->question = strip_tags($response->question);
                         if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $response->question)){
                             $explode = explode(")", $response->question);
                             $response->question = ltrim($explode[1]);
-                        }else{
-                        $return[$position]->question = strip_tags($response->question);
                         }
                         $explode = explode("</li>",$response->info);
                         foreach($explode as $key => $item){ 
