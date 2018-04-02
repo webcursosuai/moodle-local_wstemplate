@@ -198,10 +198,7 @@ class local_webservice_external extends external_api {
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                     $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
                     foreach($return as $position => $response){
-                        if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $response->question)){
-                            $explode = explode(")", $response->question);
-                            $rank->content = ltrim($explode[1]);
-                        }
+                        
                         $return[$position] = strip_tags($response->question);
                         $explode = explode("</li>",$response->info);
                         foreach($explode as $key => $item){
@@ -225,7 +222,9 @@ class local_webservice_external extends external_api {
                         unset($response->info);
                     }
                }
-
+                
+                
+                
                 if(count($return) == 0){
                     $return = array("ERROR: This questionnaires in not in this course");
                 }
