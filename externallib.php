@@ -33,7 +33,7 @@ class local_webservice_external extends external_api {
                 array(
                 	'courseid' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
                 	'feedbackid' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, 0),
-                'excel' => new external_value(PARAM_INT, 'changes the format of the json', VALUE_DEFAULT 0,)
+                'excel' => new external_value(PARAM_INT, 'changes the format of the json', VALUE_DEFAULT , 0)
                 )
         );
     }
@@ -197,7 +197,7 @@ class local_webservice_external extends external_api {
                                                             INNER JOIN {questionnaire_question_type} AS qqt ON (qqt.typeid = qq.type_id)
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                     $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
-                   /* foreach($return as $position => $response){
+                    foreach($return as $position => $response){
                         if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $response->question)){
                             $explode = explode(")", $response->question);
                             $response->question = ltrim($explode[1]);
@@ -223,7 +223,7 @@ class local_webservice_external extends external_api {
                         $response->grupo = $explode[6];
                         $response->coordinadora = $explode[7];
                         unset($response->info);
-                    }*/
+                    }
                }
                 
                 
