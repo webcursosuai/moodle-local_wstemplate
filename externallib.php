@@ -33,7 +33,7 @@ class local_webservice_external extends external_api {
                 array(
                 	'courseid' => new external_value(PARAM_INT, 'the initial date from where you want to get the attendance', VALUE_DEFAULT, 0),
                 	'feedbackid' => new external_value(PARAM_INT, 'the last day from where you want to get the attendance', VALUE_DEFAULT, 0),
-                'excel' => new external_value(PARAM_INT, 'changes the format of the json', VALUE_DEFAULT, 0)
+                'excel' => new external_value(PARAM_INT, 'changes the format of the json', VALUE_DEFAULT 0,)
                 )
         );
     }
@@ -151,7 +151,7 @@ class local_webservice_external extends external_api {
                else{
                    
                     $return=array();
-                    $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, qq.position q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
+                    $textresponses = $DB->get_records_sql('SELECT qrt.id as id, cc.name as category, c.fullname as coursename, q.name as questionnaire, qqt.response_table, qq.length, q.intro as info, qq.name as sectioncategory, qq.content as question, qrt.response as response FROM {questionnaire} AS q 
                                                             INNER JOIN {course} AS c ON (c.id = q.course AND c.id = ? AND q.id = ?)
                                                             INNER JOIN {course_categories} AS cc ON (cc.id = c.category)
                                                             INNER JOIN {questionnaire_question} AS qq ON (qq.survey_id = q.id)
@@ -198,7 +198,10 @@ class local_webservice_external extends external_api {
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                     $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
                     foreach($return as $position => $response){
-                        
+                        if(preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $response->question)){
+                            $explode = explode(")", $response->question);
+                            $rank->content = ltrim($explode[1]);
+                        }
                         $return[$position] = strip_tags($response->question);
                         $explode = explode("</li>",$response->info);
                         foreach($explode as $key => $item){
