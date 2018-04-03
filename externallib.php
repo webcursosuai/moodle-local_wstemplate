@@ -71,7 +71,6 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid > 0):
-                
                 if($excel == 0){
                     $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
                     $explode = explode("</li>",$result->intro);
@@ -196,13 +195,13 @@ class local_webservice_external extends external_api {
                                                             INNER JOIN {questionnaire_resp_multiple} AS qrm ON (qrm.choice_id = qqc.id)
                                                             INNER JOIN {questionnaire_question_type} AS qqt ON (qqt.typeid = qq.type_id)
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
-                    $return = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
+                    $result = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
                     $count = 0;
-                    foreach($return as $position => $response){
+                    foreach($result as $position => $response){
                         if($question->name === "EVALUACIÓN DEL PROFESOR"){
                             $count++;
                         }
-                        $return[$position]->question = strip_tags($response->question);
+                        $result[$position]->question = strip_tags($response->question);
                         if($response->response_table === 'response_rank'){
                             $explode = explode(")", $response->question);
                             $response->question = ltrim($explode[1]);
@@ -216,19 +215,30 @@ class local_webservice_external extends external_api {
                             $explode[$key] = $info[1];
                             
                         }
+                        $obj = new stdClass();
+                        $obj->category = $response->category;
+                        $obj->coursename = $response->coursename;
+                        $obj->questionnaire = $response->questionnaire;
+                        $obj->response_table = $response->response_table;
+                        $obj->length = $response->length;
+                        $obj->position = $response->position;
+                        $obj->sectioncategory = $response->sectioncategory;
+                        $obj->question = $response->sectioncategory;
+                        $obj->response = $response->sectioncategory;
                         
-                        $response->programa = $explode[0];
-                        $response->cliente = $explode[1];
-                        $response->actividad = $explode[2];
+                        
+                        $obj->programa = $explode[0];
+                        $obj->cliente = $explode[1];
+                        $obj->actividad = $explode[2];
                         if($count < 3){
-                            $response->profesor = $explode[3];
+                            $obj->profesor = $explode[3];
                         }else{
-                            $response->profesor = $explode[4];
+                            $obj->profesor = $explode[4];
                         }
-                        $response->fecha = $explode[5];
-                        $response->grupo = $explode[6];
-                        $response->coordinadora = $explode[7];
-                        unset($response->info);
+                        $obj->fecha = $explode[5];
+                        $obj->grupo = $explode[6];
+                        $obj->coordinadora = $explode[7];
+                        unset($obj->info);
                     }
                }
                 if(count($return) == 0){
