@@ -226,7 +226,7 @@ class local_webservice_external extends external_api {
                         $obj->position = $response->position;
                         $obj->sectioncategory = $response->sectioncategory;
                         $obj->question = $response->question;
-                        $obj->response = $response->sectioncategory;
+                        $obj->response = $response->response;
                         
                         
                         $obj->programa = $explode[0];
