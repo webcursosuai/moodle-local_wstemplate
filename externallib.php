@@ -233,7 +233,7 @@ class local_webservice_external extends external_api {
                                 $obj->profesor = $explode[4];
                             }
                         }else{
-                            $obj->profesor = $explode[3];
+                            $obj->profesor = count($explode[4];
                         }
                         $obj->fecha = $explode[5];
                         $obj->grupo = $explode[6];
