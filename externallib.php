@@ -220,11 +220,20 @@ class local_webservice_external extends external_api {
                         $obj->response_table = $response->response_table;
                         $obj->length = $response->length;
                         $obj->position = $response->position;
-                        $obj->sectioncategory = $response->sectioncategory;
+                        if($response->sectioncategory === "EVALUACIÓN GENERAL"){
+                            $count++;
+                            if($count==1){
+                                $obj->sectioncategory= "AUTOEVALUACIÓN";
+                            }elseif($count == 2){
+                                $obj->sectioncategory= "EVALUACIÓN ACADÉMICA";
+                            }else{
+                                $obj->sectioncategory= "EVALUACIÓN DEL PROFESOR";
+                            }
+                        }else{
+                            $obj->sectioncategory = $response->sectioncategory;
+                        }
                         $obj->question = $response->question;
                         $obj->response = $response->response;
-                        
-                        
                         $obj->programa = $explode[0];
                         $obj->cliente = $explode[1];
                         $obj->actividad = $explode[2];
