@@ -231,6 +231,8 @@ class local_webservice_external extends external_api {
                         if(strlen($explode[4]) > 5){
                             if($response->position == 6 || $response->position == 7){
                                 $obj->profesor = $explode[4];
+                            }else{
+                                $obj->profesor = $explode[3];
                             }
                         }else{
                             $obj->profesor = $explode[3];
