@@ -198,11 +198,7 @@ class local_webservice_external extends external_api {
                                                             INNER JOIN {questionnaire_question_type} AS qqt ON (qqt.typeid = qq.type_id)
                                                             WHERE q.intro like "<ul>%" AND cc.id != 39', array($courseid,$feedbackid));
                     $result = array_merge($textresponses,$rankresponses,$dateresponses,$boolresponses,$singleresponses,$multiresponses);
-                    $count = 0;
                     foreach($result as $position => $response){
-                        if($question->name === "EVALUACIÓN DEL PROFESOR"){
-                            $count++;
-                        }
                         $result[$position]->question = strip_tags($response->question);
                         if($response->response_table === 'response_rank' && $response->sectioncategory !== 'EVALUACIÓN GENERAL'){
                             $explode = explode(")", $response->question);
@@ -232,10 +228,10 @@ class local_webservice_external extends external_api {
                         $obj->programa = $explode[0];
                         $obj->cliente = $explode[1];
                         $obj->actividad = $explode[2];
-                        if($count < 3){
-                            $obj->profesor = $explode[3];
-                        }else{
+                        if($response->position > 4){
                             $obj->profesor = $explode[4];
+                        }else{
+                            $obj->profesor = $explode[3];
                         }
                         $obj->fecha = $explode[5];
                         $obj->grupo = $explode[6];
