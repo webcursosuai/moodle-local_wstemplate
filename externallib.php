@@ -204,12 +204,11 @@ class local_webservice_external extends external_api {
                             $count++;
                         }
                         $result[$position]->question = strip_tags($response->question);
-                        /*if($response->response_table === 'response_rank' && $response->sectioncategory !== 'EVALUACIÓN GENERAL'){
+                        if($response->response_table === 'response_rank' && $response->sectioncategory !== 'EVALUACIÓN GENERAL'){
                             $explode = explode(")", $response->question);
                             $response->question = ltrim($explode[1]);
                         }
                         $explode = explode("</li>",$response->info);
-                        */
                         foreach($explode as $key => $item){ 
                             $explode[$key] = strip_tags($item);
                         }
