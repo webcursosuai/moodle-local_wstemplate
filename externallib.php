@@ -239,6 +239,7 @@ class local_webservice_external extends external_api {
                         $obj->grupo = $explode[6];
                         $obj->coordinadora = $explode[7];
                         unset($obj->info);
+                        $return[] = $obj;
                     }
                }
                 if(count($return) == 0){
