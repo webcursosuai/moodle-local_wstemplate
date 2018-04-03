@@ -228,7 +228,7 @@ class local_webservice_external extends external_api {
                         $obj->programa = $explode[0];
                         $obj->cliente = $explode[1];
                         $obj->actividad = $explode[2];
-                        if($explode[4] !== "n.a."){
+                        if(count($explode[4]) > 5){
                             if($response->position == 6 || $response->position == 7){
                                 $obj->profesor = $explode[4];
                             }
