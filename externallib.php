@@ -106,7 +106,7 @@ class local_webservice_external extends external_api {
                                 $input->profesor =  $result->profesor1;
                             }
                             if($count == 4 || $count == 3){
-                                $input->profesor = $$result->profesor2;
+                                $input->profesor = $result->profesor2;
                             }
                             $input->fecha = $result->fecha;
                             $input->grupo = $result->grupo;
@@ -131,12 +131,12 @@ class local_webservice_external extends external_api {
                                 $input->programa = $result->programa;
                                 $input->cliente =  $result->cliente;
                                 $input->actividad =  $result->actividad;
-                                /*if($count == 2 || $count == 1){
+                                if($count == 2 || $count == 1){
                                     $input->profesor =  $result->profesor1;
                                 }
                                 if($count == 4 || $count == 3){
-                                    $input->profesor = $$result->profesor2;
-                                }*/
+                                    $input->profesor = $result->profesor2;
+                                }
                                 $input->fecha = $result->fecha;
                                 $input->grupo = $result->grupo;
                                 $input->coordinadora = $result->coordinadora;
