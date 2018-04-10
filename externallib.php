@@ -111,18 +111,7 @@ class local_webservice_external extends external_api {
                             $input->fecha = $result->fecha;
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
-                            if($question->name === "EVALUACIÓN GENERAL"){
-                                $count++;
-                                if($count==1){
-                                    $input->category = "AUTOEVALUACIÓN";
-                                }elseif($count == 2){
-                                    $input->category = "EVALUACIÓN ACADÉMICA";
-                                }else{
-                                    $input->category = "EVALUACIÓN DEL PROFESOR";
-                                }
-                            }else{
-                                $input->category = $question->name;
-                            }
+                            $input->category = $question->name;
                             $input->position = $question->position;
                             $input->question = strip_tags($question->content);
                             $input->responses = $responses;
@@ -242,18 +231,7 @@ class local_webservice_external extends external_api {
                         $obj->response_table = $response->response_table;
                         $obj->length = $response->length;
                         $obj->position = $response->position;
-                        if($response->sectioncategory === "EVALUACIÓN GENERAL"){
-                            $count++;
-                            if($count==1){
-                                $obj->sectioncategory= "AUTOEVALUACIÓN";
-                            }elseif($count == 2){
-                                $obj->sectioncategory= "EVALUACIÓN ACADÉMICA";
-                            }else{
-                                $obj->sectioncategory= "EVALUACIÓN DEL PROFESOR";
-                            }
-                        }else{
-                            $obj->sectioncategory = $response->sectioncategory;
-                        }
+                        $obj->sectioncategory = $response->sectioncategory;
                         $obj->question = $response->question;
                         $obj->response = $response->response;
                         $obj->programa = $explode[0];
