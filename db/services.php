@@ -25,7 +25,7 @@
 $functions = array(
         'local_webservice_intranetmobile' => array(
                 'classname'   => 'local_webservice_external',
-                'methodname'  => 'webservice_intranetmobule',
+                'methodname'  => 'webservice_intranetmobile',
                 'classpath'   => 'local/webservice/externallib.php',
                 'description' => 'Returns the last modification of the surveys within CDC moodle',
                 'type'        => 'read',
