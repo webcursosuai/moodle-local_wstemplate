@@ -48,7 +48,6 @@ class local_webservice_external extends external_api {
             array('idnumber' => $courseidnumber));
         
         $return = $DB->get_record('course',array("idnumber" => $courseidnumber));
-        break;
         
         echo json_encode($return);
         //return $return;
