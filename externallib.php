@@ -62,7 +62,7 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT q.id, MAX(qr.submitted) FROM {questionnaire} AS q
+                $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%Y/%M/%D" as fecha FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
                                                 GROUP BY q.id', array($courseid));
@@ -108,6 +108,7 @@ class local_webservice_external extends external_api {
                             if($count == 4 || $count == 3){
                                 $input->profesor = $result->profesor2;
                             }
+                            $input->length = 0;
                             $input->fecha = $result->fecha;
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
@@ -137,6 +138,7 @@ class local_webservice_external extends external_api {
                                 if($count == 4 || $count == 3){
                                     $input->profesor = $result->profesor2;
                                 }
+                                $input->length = $result->length;
                                 $input->fecha = $result->fecha;
                                 $input->grupo = $result->grupo;
                                 $input->coordinadora = $result->coordinadora;
