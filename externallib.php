@@ -56,6 +56,7 @@ class local_webservice_external extends external_api {
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
                                                 INNER JOIN {questionnaire} AS q ON (c.id = q.course)
+                                                WHERE q.intro like "<ul>%" AND c.category != 39
                                                 GROUP BY c.id', array("questionnaire"));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires have been made");
@@ -67,6 +68,7 @@ class local_webservice_external extends external_api {
                 $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%Y-%m-%d") as fecha FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
+                                                WHERE q.intro like "<ul>%" AND c.category != 39
                                                 GROUP BY q.id', array($courseid));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires in this course");
