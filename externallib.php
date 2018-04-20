@@ -59,6 +59,8 @@ class local_webservice_external extends external_api {
                                                 GROUP BY c.id', array("questionnaire"));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires have been made");
+                }else{
+                    $return = array_values($return);
                 }
                 break;
             case($courseid > 0 && $feedbackid == 0):
@@ -68,6 +70,8 @@ class local_webservice_external extends external_api {
                                                 GROUP BY q.id', array($courseid));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires in this course");
+                }else{
+                    $return = array_values($return);
                 }
                 break;
             case($courseid > 0 && $feedbackid > 0):
@@ -115,7 +119,7 @@ class local_webservice_external extends external_api {
                             $input->category = $question->name;
                             $input->position = $question->position;
                             $input->question = strip_tags($question->content);
-                            $input->responses = $responses;
+                            $input->responses = array_values($responses);
                             $return[] = $input;
                             
                         }
@@ -156,7 +160,7 @@ class local_webservice_external extends external_api {
                                 }
                                 $input->position = $question->position;
                                 $input->question = $rank->content;
-                                $input->responses = $responses;
+                                $input->responses = array_values($responses);
                                 $return[] = $input;
                             }
                         }
