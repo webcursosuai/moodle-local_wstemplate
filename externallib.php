@@ -83,7 +83,7 @@ class local_webservice_external extends external_api {
                     $explode = explode("</li>",$result->intro);
                     foreach($explode as $key => $exploded){
                         $info = explode(":",$exploded);
-                        $explode[$key] = $info[1];    
+                        $explode[$key] = strip_tags($info[1]);    
                     }
                     $result->programa = $explode[0];
                     $result->cliente = $explode[1];
