@@ -114,7 +114,7 @@ class local_webservice_external extends external_api {
                             }else{
                                 $input->profesor =  $result->profesor1;
                             }
-                            
+                            $input->email = "";
                             $input->length = "0";
                             $input->fecha = $result->fecha;
                             $input->grupo = $result->grupo;
@@ -144,6 +144,7 @@ class local_webservice_external extends external_api {
                                 }else{
                                     $input->profesor =  $result->profesor1;
                                 }
+                                $input->email = "";
                                 $input->length = $question->length;
                                 $input->fecha = $result->fecha;
                                 $input->grupo = $result->grupo;
