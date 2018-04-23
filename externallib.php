@@ -66,14 +66,34 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%Y-%m-%d") as fecha FROM {questionnaire} AS q
+                $results = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%Y-%m-%d") as fecha, q.name, q.intro FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
                                                 WHERE q.intro like "<ul>%" AND c.category != 39
                                                 GROUP BY q.id', array($courseid));
-                if(count($return) == 0){
+                if(count($results) == 0){
                     $return = array("ERROR: No questionnaires in this course");
                 }else{
+                    $return = array();
+                    foreach($results as $result){
+                        $explode = explode("</li>",$result->intro);
+                        foreach($explode as $key => $exploded){
+                            $info = explode(":",$exploded);
+                            $explode[$key] = strip_tags($info[1]);
+                        }
+                        $object = new stdClass();
+                        $object->id = $result->id;
+                        $object->ultimarespuesta = $result->fecha;
+                        $object->programa = $explode[0];
+                        $object->cliente = $explode[1];
+                        $object->actividad = $explode[2];
+                        $object->profesor1 = $explode[3];
+                        $object->profesor2 = $explode[4];
+                        $object->fecha = $explode[5];
+                        $object->grupo = $explode[6];
+                        $object->coordinadora = $explode[7];
+                        $return[] = $object;
+                    }
                     $return = array_values($return);
                 }
                 break;
