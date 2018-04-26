@@ -82,7 +82,7 @@ class local_webservice_external extends external_api {
                     $result = $DB->get_record_sql('SELECT q.id,q.course as courseid,q.name,q.intro, c.fullname as coursename, cc.name as categoryname FROM {questionnaire} as q 
                                                     INNER JOIN {course} as c on c.id = q.course
                                                     INNER JOIN {course_categories} as cc on cc.id = c.category 
-                                                    WHERE id = ?', array("id"=>$feedbackid));
+                                                    WHERE q.id = ?', array("id"=>$feedbackid));
                     $explode = explode("</li>",$result->intro);
                     foreach($explode as $key => $exploded){
                         $info = explode(":",$exploded);
