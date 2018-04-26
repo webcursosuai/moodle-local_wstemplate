@@ -79,7 +79,10 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid > 0):
                 if($excel == 0){
-                    $result = $DB->get_record_sql('SELECT id,course,name,intro FROM {questionnaire} WHERE id = ?', array("id"=>$feedbackid));
+                    $result = $DB->get_record_sql('SELECT q.id,q.course as courseid,q.name,q.intro, c.fullname as coursename, cc.name as categoryname FROM {questionnaire} as q 
+                                                    INNER JOIN {course} as c on c.id = q.course
+                                                    INNER JOIN {course_categories} as cc on cc.id = c.category 
+                                                    WHERE id = ?', array("id"=>$feedbackid));
                     $explode = explode("</li>",$result->intro);
                     foreach($explode as $key => $exploded){
                         $info = explode(":",$exploded);
@@ -106,6 +109,9 @@ class local_webservice_external extends external_api {
                         if($question->type_id == 2  || $question->type_id == 10){
                             $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                             $input = new stdClass();
+                            $input->nombrecategoria = $result->categoryname;
+                            $input->nombrecurso = $result->coursename;
+                            $input->encuesta = $result->name;
                             $input->programa = $result->programa;
                             $input->cliente =  $result->cliente;
                             $input->actividad =  $result->actividad;
@@ -136,6 +142,9 @@ class local_webservice_external extends external_api {
                                 }
                                 $responses = $DB->get_records_sql('SELECT id, rank+1 as value FROM {questionnaire_response_rank} WHERE choice_id = ?', array($rank->id));
                                 $input = new stdClass();
+                                $input->nombrecategoria = $result->categoryname;
+                                $input->nombrecurso = $result->coursename;
+                                $input->encuesta = $result->name;
                                 $input->programa = $result->programa;
                                 $input->cliente =  $result->cliente;
                                 $input->actividad =  $result->actividad;
