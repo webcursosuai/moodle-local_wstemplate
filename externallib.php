@@ -107,7 +107,7 @@ class local_webservice_external extends external_api {
                             $count++;
                         }
                         if($question->type_id == 2  || $question->type_id == 10){
-                            $responses = $DB->get_records_sql('SELECT id, response FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
+                            $responses = $DB->get_records_sql('SELECT id, response as value FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                             $input = new stdClass();
                             $input->nombrecategoria = $result->categoryname;
                             $input->nombrecurso = $result->coursename;
@@ -130,7 +130,6 @@ class local_webservice_external extends external_api {
                             $input->question = strip_tags($question->content);
                             $input->responses = array_values($responses);
                             $return[] = $input;
-                            
                         }
                         elseif($question->type_id == 8){
                             $rankquestions = $DB->get_records_sql('SELECT id, content FROM {questionnaire_quest_choice} WHERE question_id = ?', array($question->id));
