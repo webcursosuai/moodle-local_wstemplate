@@ -84,7 +84,7 @@ class local_webservice_external extends external_api {
                                                     q.name,q.intro, 
                                                     c.fullname as coursename, 
                                                     cc.name as categoryname,
-                                                    from_unixtime(q.opendate,"%d-%m-%Y") as fechaapretura,
+                                                    from_unixtime(q.opendate,"%d-%m-%Y") as fechaapertura,
                                                     from_unixtime(q.closedate,"%d-%m-%Y") as fechacierre 
                                                     FROM {questionnaire} as q 
                                                     INNER JOIN {course} as c on c.id = q.course
@@ -130,7 +130,7 @@ class local_webservice_external extends external_api {
                             $input->email = "";
                             $input->length = "0";
                             $input->fecha = $result->fecha;
-                            $input->fechaapretura = $result->fechaapretura;
+                            $input->fechaapertura = $result->fechaapertura;
                             $input->fechacierre = $result->fechacierre;
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
@@ -164,7 +164,7 @@ class local_webservice_external extends external_api {
                                 $input->email = "";
                                 $input->length = $question->length;
                                 $input->fecha = $result->fecha;
-                                $input->fechaapretura = $result->fechaapretura;
+                                $input->fechaapertura = $result->fechaapertura;
                                 $input->fechacierre = $result->fechacierre;
                                 $input->grupo = $result->grupo;
                                 $input->coordinadora = $result->coordinadora;
