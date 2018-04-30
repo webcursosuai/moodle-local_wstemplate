@@ -66,7 +66,7 @@ class local_webservice_external extends external_api {
                 }
                 break;
             case($courseid > 0 && $feedbackid == 0):
-                $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%Y-%m-%d") as fecha FROM {questionnaire} AS q
+                $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%d-%m-%Y") as fecha FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
                                                 WHERE q.intro like "<ul>%" AND c.category != 39
@@ -84,8 +84,8 @@ class local_webservice_external extends external_api {
                                                     q.name,q.intro, 
                                                     c.fullname as coursename, 
                                                     cc.name as categoryname,
-                                                    from_unixtime(q.opendate,"%Y-%m-%d") as fechaapretura,
-                                                    from_unixtime(q.closedate,"%Y-%m-%d") as fechacierre 
+                                                    from_unixtime(q.opendate,"%d-%m-%Y") as fechaapretura,
+                                                    from_unixtime(q.closedate,"%d-%m-%Y") as fechacierre 
                                                     FROM {questionnaire} as q 
                                                     INNER JOIN {course} as c on c.id = q.course
                                                     INNER JOIN {course_categories} as cc on cc.id = c.category 
