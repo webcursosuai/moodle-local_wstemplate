@@ -79,7 +79,14 @@ class local_webservice_external extends external_api {
                 break;
             case($courseid > 0 && $feedbackid > 0):
                 if($excel == 0){
-                    $result = $DB->get_record_sql('SELECT q.id,q.course as courseid,q.name,q.intro, c.fullname as coursename, cc.name as categoryname FROM {questionnaire} as q 
+                    $result = $DB->get_record_sql('SELECT q.id,
+                                                    q.course as courseid,
+                                                    q.name,q.intro, 
+                                                    c.fullname as coursename, 
+                                                    cc.name as categoryname,
+                                                    from_unixtime(q.opendate,"%Y-%m-%d") as fechaapretura,
+                                                    from_unixtime(q.closedate,"%Y-%m-%d") as fechacierre 
+                                                    FROM {questionnaire} as q 
                                                     INNER JOIN {course} as c on c.id = q.course
                                                     INNER JOIN {course_categories} as cc on cc.id = c.category 
                                                     WHERE q.id = ?', array("id"=>$feedbackid));
@@ -123,6 +130,8 @@ class local_webservice_external extends external_api {
                             $input->email = "";
                             $input->length = "0";
                             $input->fecha = $result->fecha;
+                            $input->fechaapretura = $result->fechaapretura;
+                            $input->fechacierre = $result->fechacierre;
                             $input->grupo = $result->grupo;
                             $input->coordinadora = $result->coordinadora;
                             $input->category = $question->name;
@@ -155,6 +164,8 @@ class local_webservice_external extends external_api {
                                 $input->email = "";
                                 $input->length = $question->length;
                                 $input->fecha = $result->fecha;
+                                $input->fechaapretura = $result->fechaapretura;
+                                $input->fechacierre = $result->fechacierre;
                                 $input->grupo = $result->grupo;
                                 $input->coordinadora = $result->coordinadora;
                                 if($question->name === "EVALUACIÓN GENERAL"){
