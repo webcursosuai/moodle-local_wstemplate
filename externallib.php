@@ -168,18 +168,7 @@ class local_webservice_external extends external_api {
                                 $input->fechacierre = $result->fechacierre;
                                 $input->grupo = $result->grupo;
                                 $input->coordinadora = $result->coordinadora;
-                                if($question->name === "EVALUACIÓN GENERAL"){
-                                    $count++;
-                                    if($count==1){
-                                        $input->category = "AUTOEVALUACIÓN";
-                                    }elseif($count == 2){
-                                        $input->category = "EVALUACIÓN ACADÉMICA";
-                                    }else{
-                                        $input->category = "EVALUACIÓN DEL PROFESOR";
-                                    }
-                                }else{
-                                    $input->category = $question->name;
-                                }
+                                $input->category = $question->name;
                                 $input->position = $question->position;
                                 $input->question = $rank->content;
                                 $input->responses = array_values($responses);
