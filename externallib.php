@@ -113,6 +113,9 @@ class local_webservice_external extends external_api {
                         if($question->name === "EVALUACIÓN DEL PROFESOR"){
                             $count++;
                         }
+                        if($count==4 && $question->name != "EVALUACIÓN DEL PROFESOR"){
+                            $count++;
+                        }
                         if($question->type_id == 2  || $question->type_id == 10){
                             $responses = $DB->get_records_sql('SELECT id, response as value FROM {questionnaire_response_text} WHERE question_id = ?', array($question->id));
                             $input = new stdClass();
