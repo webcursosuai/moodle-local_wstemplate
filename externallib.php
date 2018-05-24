@@ -55,10 +55,10 @@ class local_webservice_external extends external_api {
                 $return = $DB->get_records_sql('SELECT c.id FROM {course} AS c
                                                 INNER JOIN {course_modules} AS cm ON (c.id = cm.course)
                                                 INNER JOIN {modules} AS m ON (cm.module = m.id AND m.name = ?)
-                                                INNER JOIN {questionnaire} AS q ON (c.id = q.course)
+                                                INNER JOIN {questionnaire} AS q ON (c.id = q.course AND q.closedate < ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
                                                 WHERE q.intro like "<ul>%" AND c.category != 39
-                                                GROUP BY c.id', array("questionnaire"));
+                                                GROUP BY c.id', array("questionnaire", time()));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires have been made");
                 }else{
@@ -69,8 +69,8 @@ class local_webservice_external extends external_api {
                 $return = $DB->get_records_sql('SELECT q.id, from_unixtime(MAX(qr.submitted),"%d-%m-%Y") as fecha FROM {questionnaire} AS q
                                                 INNER JOIN {course} AS c ON (q.course = c.id AND c.id = ?)
                                                 INNER JOIN {questionnaire_response} AS qr ON (q.id = qr.survey_id)
-                                                WHERE q.intro like "<ul>%" AND c.category != 39
-                                                GROUP BY q.id', array($courseid));
+                                                WHERE q.intro like "<ul>%" AND c.category != 39 AND q.closedate < ?
+                                                GROUP BY q.id', array($courseid,time()));
                 if(count($return) == 0){
                     $return = array("ERROR: No questionnaires in this course");
                 }else{
